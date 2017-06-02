@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/game.js"></script>
+		<script src="js/imagload.js"></script>
+		<script src="js/touch.js"></script>
+		<script src="js/hitPix.js"></script>
+		<style>
+			html,body{
+				padding: 0;margin: 0;
+				overflow: hidden;
+				background: #f6f6f6;
+				width: 100%;height: 100%;
+			}
+			canvas{
+				background: url(img/back/bg.jpg) repeat-x;
+				background-size: cover;
+			}
+		</style>
+		<script>
+			function(){
+				var img=document.querySelector("img");
+//				var obj=new Image();
+//				obj.src="img/back/back.jpg";
+//				obj.onload=function(){
+//					alert("载入成功");
+//					img.onmouseover=function(){
+//						
+//					}
+//				}
+
+				//图片预加载处理
+				function ImageLoad(imgObjs){
+					this.imgObjs=imgObjs;
+					this.urlArr=[];
+				}
+				ImageLoad.prototype={
+					geturl:function(){
+						for(var i<this.imgObjs.length){
+							this.urlArr.push(this.imgObjs[i].src);
+						}
+					},
+					load:function(url,callback){
+						var imgobj=new Image();
+						imgobj.src=url;
+						imgobj.onload=function(){
+							callback();
+						}
+					},
+					loadAll:function(){
+						this.geturl();
+						var that=this;
+						var num=1;
+						for(i<this.urlArr.length){
+							this.load(this.urlArr[i],Function(){
+								this.load(this.urlArr[i],function(){
+									that.load(this.urlArr[index]);
+									num++;
+									if(num==that.urlArr.length){
+										alert("图片全部加载完成");
+									}
+								})
+							})(i)
+						}
+					}
+				}
+				var obj=new ImageLoad(document.querySelectorAll("img"));
+				obj.loadAll(function(){
+					alert("加载完成，游戏开始");
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<!--<input type="text" />-->
+		<canvas>
+			您的浏览器不支持canvas...
+		</canvas>
+		<!--跳起来只有一种姿势-->
+		<img src="img/person/run1.png" alt="" class="run" hidden/>
+		<img src="img/person/run2.png" alt="" class="run" hidden/>
+		<img src="img/person/run3.png" alt="" class="run" hidden/>
+		<img src="img/person/run4.png" alt="" class="run" hidden/>
+		<img src="img/person/run5.png" alt="" class="run" hidden/>
+		<img src="img/person/run6.png" alt="" class="run" hidden/>
+		<img src="img/person/run7.png" alt="" class="run" hidden/>
+		<img src="img/person/run4.png" alt="" class="jump" hidden/>
+		<img src="img/hinder/boom.png" alt="" class="hinder" hidden/>
+		<img src="img/hinder/flow.png" alt="" class="hinder" hidden/>
+		<img src="img/hinder/egg.png" alt="" class="hinder" hidden/>
+		<img src="img/hinder/stone.png" alt="" class="hinder" hidden/>
+		<img src="img/hinder/grass.png" alt="" class="hinder" hidden/>
+		<img src="img/hinder/ys.png" alt="" class="hinder" hidden/>
+	</body>
+	<script>
+		document.addEventListener("DOMContentLoaded",function(){
+			var canvas=document.getElementsByTagName("canvas")[0];
+			var cobj=canvas.getContext("2d");
+			var runimg=document.querySelectorAll(".run");
+			var jumpimg=document.querySelectorAll(".jump");
+			var hinderimg=document.querySelectorAll(".hinder");
+			var gameObj=new game(canvas,cobj,runimg,jumpimg,hinderimg);
+			
+			
+			window.onresize=function(){   //当窗口持续变化时。。。
+				var	clientw=document.documentElement.clientWidth;
+				var	clienth=document.documentElement.clientHeight;
+		 		canvas.width=clientw;
+		        canvas.height=clienth;
+		        if(canvas.width/1136>canvas.height/544){
+		        	canvas.style.backgroundSize="contain";
+		        }else{
+		        	canvas.style.backgroundSize="cover";	
+		        }
+		        gameObj.person.y=canvas.height-gameObj.person.height;
+		        
+		        
+		        for(var i=0;i<gameObj.hinderArr.length;i++){
+                  gameObj.hinderArr[i].y=canvas.height-gameObj.hinderArr[i].height;
+              }
+			}
+			window.onresize();
+
+			var imgloadObj= new imageLoad(document.querySelectorAll("img"));
+            imgloadObj.loadAll(function(){
+                 gameObj.play();
+            });
+
+			
+		})
+	</script>
+</html>

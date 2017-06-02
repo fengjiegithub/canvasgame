@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>让canvas里的元素动起来</title>
+	</head>
+	<style type="text/css">
+		canvas{
+			background: paleturquoise;
+		}
+	</style>
+	<script src="../html5/shpae.js"></script>
+	<script>
+		//偏移动画布
+		window.onload=function(){
+			var canvas=document.getElementsByTagName("canvas")[0];
+		 	var cobj=canvas.getContext("2d");
+//		 	var speed=1;var speed1=1;
+//			var x=0,y=0,speed=1;
+//			setInterval(function(){
+//				cobj.clearRect(0,0,canvas.width,canvas.height);
+//				cobj.translate(speed,speed1);
+//				x+=speed;
+//				y+=speed;
+				//保存
+//				cobj.save();
+//				cobj.beginPath();
+//				cobj.fillStyle="palevioletred";
+//				cobj.translate(x,y)
+//      		cobj.arc(0,0,10,0,2*Math.PI);
+//      		cobj.fill();
+//      		cobj.restore();
+        		//第二个图形
+//      		cobj.fillRect(100,100,50,50)
+//      		
+//			},50)
+			//保存移动之前的状态   cobj.save()   移动后在放回    cobj.restore
+//			cobj.save()
+
+
+
+
+		//认为保存数据
+//		function rect(){
+//			this.x=0;
+//			this.y=0;
+//			this.w=100;
+//			this.h=100;
+//			this.speedx=1;
+//			this.speedy=1;
+//			
+//			rect.prototype={
+//				draw:function(){
+//					cobj.save();
+//					cobj.translate(this.x,this.y);
+//					cobj.fillRect(0,0,this.w,this.h);
+//					cobj.restore();
+//				}
+//				
+//			}
+//			
+//		var rect1=new rect();
+//		var rect2=new rect();
+//		rect2.x=100;
+//		rect2.y=100;
+//		rect2.speed1=-5;
+//		setInterval(function(){
+//			cobj.clearRect(0,0,canvas.width,canvas.height);
+//			cobj.translate(rect1.speedx,rect1.speedy);
+//			cobj.translate(rect2.speedx,rect2.speedy);
+//			rect1.draw();
+//			rect1.update();
+//			rect2.draw();
+//			rect2.update();
+//		},50)
+//			
+//			
+//		}
+		
+		
+//		function arc(){
+//			this.x=100;
+//			this.y=200;
+//			this.r=2+3*Math.random();
+//			this.color="rgb(226,16,12)";
+//			this.speedy=-(2+3*Math.random());
+////			this.life=5;
+////			this.speedr=0.3;
+////			this.speed=0.3
+//			arc:prototype={
+//				draw:function(){
+//						cobj.save();
+//						cobj.translate(this.x,this.y);
+//						cobj.beginPath();
+////						cobj.fillStyle=this.color;
+////						cobj.globalCompositeOperation="light";
+//						cobj.arc(0,0,r,0,2*Math.PI);
+//						cobj.fill();
+//						cobj.restore();
+//				},
+//				update:function(){
+//					this.save();
+//					 this.cobj.beginPath();
+//				     this.cobj.arc(x,y,r,0,2*Math.PI);
+//				     this.cobj[this.style]();
+//				     this.restore();
+//				}
+//				var arc1=new arc();
+//				var arr=[];
+//				for(var i=0,i<arr.length;i++){
+//					arc1.draw();
+//					arc1.update();
+//				}
+//				arr.push(arr);
+////				if(arr.length<100){
+////					arr.shift();	
+////				}
+//			}
+//			
+//		}
+
+
+
+//传说中的游戏做完了???5555
+
+		
+		//粒子动画
+        //贝塞尔曲线
+//		cobj.moveTo(100,100);
+//		
+//		cobj.quadraticCurveTo(150,50,200,100);//二次贝塞尔曲线
+//		cobj.bezierCurveTo(125,30,15,150,200,100)
+		
+				/*火焰燃烧效果*/
+				function lizi(){
+					this.x=100;
+					this.y=100;
+					this.r=2+3*Math.random();
+					this.color="rgb(226,16,12)";
+					this.speedy=(2+3*Math.random());
+//					火焰摆动
+					this.life=5;
+					this.speedr=0.3;
+					this.speedl=0.3;
+					
+				}
+				lizi.prototype={
+					draw:function(){
+						cobj.save();
+						cobj.beginPath();
+						cobj.translate(this.x,this.y);
+						cobj.fillStyle=this.color;
+						cobj.globalCompositeOperation="lighter";
+						cobj.arc(0,0,this.r,0,2*Math.PI);
+						cobj.fill();
+						cobj.restore();	
+					},
+					update:function(){
+						this.speedx=6*Math.random()-3;
+						this.x+=this.speedx;
+						this.y-=this.speedy;
+						this.r=this.speedr;
+						this.life=this.speedl;
+					}
+				}
+				var arr=[];
+				setInterval(function(){
+					cobj.clearRect(0,0,canvas.width,canvas.height);
+					var liziobj=new lizi();
+					arr.push(liziobj)
+					for(var i=0;i<arr.length;i++){
+						arr[i].draw();
+						arr[i].update()
+						if(arr[i].r<0||arr[i].life<0){
+							arr[i]=new lizi();
+						}
+					}
+				},40)
+				
+			}	
+		
+		/*
+		 
+		 * 碰撞检测   游戏难点
+		 * 寻路算法
+		 * 矩形碰撞公式：
+		 * A：x1,y1,w1,h1
+		 * B:x1.y2.w2.h2
+		 * */
+	</script>
+	<body>
+	<canvas width="500"; height="500"></canvas>
+	</body>
+</html>
